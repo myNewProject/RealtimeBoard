@@ -63,19 +63,123 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		border: 1px solid #D0D0D0;
 		box-shadow: 0 0 8px #D0D0D0;
 	}
+
 	</style>
+	<script src="/RealtimeBoard/static/js/jquery/1.11.2/jquery.js" type="text/javascript"></script>
+	<script src="/RealtimeBoard/static/js/jquery.bpopup.min.js" type="text/javascript"></script>
+	<script type="text/javascript">
+	
+		function openMessage (IDS) {
+			$('#'+IDS).bPopup();
+//			$('#writeBody').bPopup();
+		}
+
+		function addBoard() {
+			openMessage('writeBody');
+		}
+
+		function saveBoard() {
+			if (!Trim($("#name").val())) {
+				alert("이름을 입력해주세요.");
+				$("#name").focus();
+				return false;
+			} else if (!Trim($("#title").val())) {
+				alert("제목을 입력해주세요.");
+				$("#title").focus();
+				return false;
+			} else if (!Trim($("#contents").val())) {
+				alert("내용을 입력해주세요.");
+				$("#contents").focus();
+				return false;
+			}
+
+			$.ajax({
+				type: 'POST',
+				url: "index.php/board/write_ok",
+				data: { name : Trim($("#name").val())
+					, title : Trim($("#title").val())
+					, contents : Trim($("#contents").val()) },
+				cache: false,
+				async: false
+			}).done(function (html) {
+				alert("저장되었습니다.");
+			});
+
+		}
+
+		function Trim(str) { // Remove Blank Function 공백 제거 함수
+			var index, len, bJudge
+
+			while(true) {
+				bJudge = true;
+				index = str.indexOf(' ');
+				if (index == -1) break;
+				if (index == 0) {
+					len = str.length;
+					str = str.substring(0, index) + str.substring((index+1), len);
+				} else {
+					bJudge = false;
+				}
+
+				index = str.lastIndexOf(' ');
+				if (index == -1) break;
+				if (index == str.length - 1) {
+					len = str.length;
+					str = str.substring(0,index) + str.substring((index+1), len);
+				} else {
+					if (bJudge == false) {
+						break;
+					}
+				}
+			}
+
+			return str;
+		}
+	</script>
 </head>
 <body>
 
 <div id="container">
-	<h1>Welcome to CodeIgniter!</h1>
-
 	<div id="body">
-		<p> 코드이그나이터로 실시간 게시판을 만들어 봅시다.</p>
 	</div>
 
-	<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>
+	<div id="bottom">
+		<div style="float:right; width=50%; text-align:right">
+			<button onclick="javascript:addBoard();">글쓰기</button>
+		</div>
+	</div>
+
+	<div id="writeBody" style="width:700px; height:500px; border:1px solid #333333; background-color:white; display:none">
+		<div style="width:80% clear:both; height:30px; margin:0px auto; margin-top:20px">
+			<span style="width:30% height:100%; line-height:30px">
+				<b>이름</b>
+			</span>
+			<span style="width:70% height:100%; line-height:30px">
+				<input type="text" name="name" id="name">
+			</span>
+		</div>
+		<div style="width:80% clear:both; height:30px; margin:0px auto">
+			<span style="width:30% height:100%; line-height:30px">
+				<b>제목</b>
+			</span>
+			<span style="width:70% height:100%; line-height:30px">
+				<input type="text" name="title" id="title" style="width:90%">
+			</span>
+		</div>
+		<div style="width:80% clear:both; height:270px; margin:0px auto">
+			<span style="width:30% height:100%; line-height:30px; vertical-align:top">
+				<b>내용</b>
+			</span>
+			<span style="width:70% height:100%;">
+				<textarea style="width:90%; height:100%" name="contents" id="contents"></textarea>
+			</span>
+		</div>
+		<div style="width:80% clear:both; height:30px; margin:0px auto; margin-top:30px; text-align:center">
+			<button onclick="javascript:saveBoard();">저장하기</button>
+		</div>
+	</div>
 </div>
+
 
 </body>
 </html>
