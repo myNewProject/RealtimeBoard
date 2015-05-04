@@ -1,6 +1,8 @@
-<?
+<?php
 	class board_model extends CI_Model {
 		public function __construct() {
+			parent::__construct();
+//			$this->load->database();
 		}
 
 		public function insert_board() {
@@ -14,7 +16,7 @@
 
 			$this->db->set('postdate', 'now()', FALSE);
 
-			return $this->db->insert('테이블명', $data);
+			return $this->db->insert('board', $data);
 		}
 	}
 ?>

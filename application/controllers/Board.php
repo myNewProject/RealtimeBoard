@@ -5,7 +5,6 @@ class Board extends CI_Controller {
 
 	public function __construct() {
 		parent::__construct();
-		$this->load->database();
 		$this->load->model('board_model');
 //		$this->load->helper('url');
 	}
@@ -25,3 +24,4 @@ class Board extends CI_Controller {
 		$this->board_model->insert_board();
 	}	
 }
+?>

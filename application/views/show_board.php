@@ -95,7 +95,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$.ajax({
 				type: 'POST',
-				url: "index.php/board/write_ok",
+				url: "/RealtimeBoard/index.php/board/write_ok",
 				data: { name : Trim($("#name").val())
 					, title : Trim($("#title").val())
 					, contents : Trim($("#contents").val()) },
